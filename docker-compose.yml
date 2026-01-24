@@ -7,9 +7,9 @@ services:
     ports:
       - "9115:9115"
     volumes:
-      - ./blackbox.yml:/etc/blackbox/blackbox.yml
+      - ./blackbox.yml:/etc/blackbox_exporter/config.yml
     command:
-      - "--config.file=/etc/blackbox/blackbox.yml"
+      - "--config.file=/etc/blackbox_exporter/config.yml"
 
   prometheus:
     image: prom/prometheus
@@ -17,7 +17,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
 
   grafana:
