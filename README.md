@@ -3,9 +3,10 @@
 - Blackbox Exporter
 - Grafana
 
-### Run
+## Run
 docker compose up -d
 
-### URLs
-- Grafana: http://localhost:3000
+## Services
 - Prometheus: http://localhost:9090
+- Grafana: http://localhost:3001
+- Blackbox: http://localhost:9115
