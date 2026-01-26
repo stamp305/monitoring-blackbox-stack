@@ -1,0 +1,30 @@
+groups:
+- name: blackbox-service
+  rules:
+  - alert: ServiceDown
+    expr: probe_success == 0
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Service {{ $labels.instance }} is DOWN"
+      description: "Blackbox probe failed for {{ $labels.service }} ({{ $labels.layer }})"
+
+  - alert: LowAvailability
+    expr: avg_over_time(probe_success[5m]) < 0.95
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Low availability on {{ $labels.service }}"
+      description: "Availability below 95% for 5 minutes"
+
+
+  - alert: HighTCPLatency
+    expr: probe_duration_seconds{job="blackbox-tcp"} > 2
+    for: 3m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High TCP latency {{ $labels.instance }}"
+      description: "TCP probe duration exceeded 2 seconds"

@@ -13,18 +13,23 @@ scrape_configs:
   static_configs:
     - targets:
         - https://reg.mfu.ac.th/backend/
-        - https://lms.mfu.ac.th
       labels:
         service: reg
         layer: application
+
+    - targets:
+        - https://lms.mfu.ac.th
+      labels:
+        service: lms
+        layer: application
+
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: blackbox:9115
-
+      replacement: blackbox-exporter:9115
 # -------------------------
 # TCP (Transport layer)
 # -------------------------
@@ -35,17 +40,23 @@ scrape_configs:
   static_configs:
     - targets:
         - reg.mfu.ac.th:443
-        - lms.mfu.ac.th:443
       labels:
         service: reg
         layer: transport
+      
+    - targets:
+        - https://lms.mfu.ac.th
+      labels:
+        service: lms
+        layer: transport
+
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: blackbox:9115
+      replacement: blackbox-exporter:9115
 
 # -------------------------
 # DNS (Infrastructure layer)
@@ -57,14 +68,23 @@ scrape_configs:
   static_configs:
     - targets:
         - reg.mfu.ac.th
-        - lms.mfu.ac.th
       labels:
         service: reg
         layer: infrastructure
+    - targets:
+        - https://lms.mfu.ac.th
+      labels:
+        service: lms
+        layer: infrastructure
+
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: blackbox:9115
+      replacement: blackbox-exporter:9115
+      
+rule_files:
+  - "alerts/*.yml"
+
