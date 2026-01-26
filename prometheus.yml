@@ -3,14 +3,13 @@ global:
 
 scrape_configs:
 
-# =========================
+# -------------------------
 # HTTP (Application layer)
-# =========================
+# -------------------------
 - job_name: blackbox-http
   metrics_path: /probe
   params:
     module: [http_2xx]
-
   static_configs:
     - targets:
         - https://reg.mfu.ac.th/backend/
@@ -18,36 +17,21 @@ scrape_configs:
       labels:
         service: reg
         layer: application
-
   relabel_configs:
-    # ส่ง target ให้ blackbox
     - source_labels: [__address__]
       target_label: __param_target
-
-    # ให้ instance = URL จริง
     - source_labels: [__param_target]
       target_label: instance
-
-    # ⭐ COPY labels เข้าสู่ metric จริง
-    - source_labels: [service]
-      target_label: service
-
-    - source_labels: [layer]
-      target_label: layer
-
-    # ชี้ไปที่ blackbox exporter
     - target_label: __address__
       replacement: blackbox:9115
 
-
-# =========================
+# -------------------------
 # TCP (Transport layer)
-# =========================
+# -------------------------
 - job_name: blackbox-tcp
   metrics_path: /probe
   params:
     module: [tcp_connect]
-
   static_configs:
     - targets:
         - reg.mfu.ac.th:443
@@ -55,31 +39,21 @@ scrape_configs:
       labels:
         service: reg
         layer: transport
-
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
-
     - source_labels: [__param_target]
       target_label: instance
-
-    - source_labels: [service]
-      target_label: service
-
-    - source_labels: [layer]
-      target_label: layer
-
     - target_label: __address__
       replacement: blackbox:9115
 
-# =========================
+# -------------------------
 # DNS (Infrastructure layer)
-# =========================
+# -------------------------
 - job_name: blackbox-dns
   metrics_path: /probe
   params:
     module: [dns]
-
   static_configs:
     - targets:
         - reg.mfu.ac.th
@@ -87,19 +61,10 @@ scrape_configs:
       labels:
         service: reg
         layer: infrastructure
-
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
-
     - source_labels: [__param_target]
       target_label: instance
-
-    - source_labels: [service]
-      target_label: service
-
-    - source_labels: [layer]
-      target_label: layer
-
     - target_label: __address__
       replacement: blackbox:9115
