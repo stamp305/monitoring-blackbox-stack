@@ -118,16 +118,7 @@ scrape_configs:
       labels:
         service: finance
         layer: infrastructure
-    - targets:
-        - 8.8.8.8
-      labels:
-        service: google-dns
-        layer: infrastructure
-    - targets:
-        - 1.1.1.1
-      labels:
-        service: cloudflare-dns
-        layer: infrastructure
+  
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
