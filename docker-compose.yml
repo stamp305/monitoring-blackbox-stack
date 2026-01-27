@@ -1,3 +1,4 @@
+version: "3.8"
 
 services:
   blackbox:
@@ -9,6 +10,11 @@ services:
       - ./blackbox.yml:/etc/blackbox/blackbox.yml
     command:
       - "--config.file=/etc/blackbox/blackbox.yml"
+    networks:
+      - monitoring
+    dns:
+      - "8.8.8.8"
+      - "1.1.1.1"
 
   prometheus:
     image: prom/prometheus
@@ -18,6 +24,8 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
+    networks:
+      - monitoring
 
   grafana:
     image: grafana/grafana:11.2.2
@@ -28,6 +36,12 @@ services:
       - grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
 
 volumes:
   grafana-data:

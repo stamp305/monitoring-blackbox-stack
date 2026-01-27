@@ -16,20 +16,34 @@ scrape_configs:
       labels:
         service: reg
         layer: application
-
     - targets:
         - https://lms.mfu.ac.th
       labels:
         service: lms
         layer: application
-
+    - targets:
+        - https://library.mfu.ac.th
+      labels:
+        service: library
+        layer: application
+    - targets:
+        - https://scholarship.mfu.ac.th
+      labels:
+        service: scholarship
+        layer: application
+    - targets:
+        - https://finance.mfu.ac.th
+      labels:
+        service: finance
+        layer: application
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: blackbox-exporter:9115
+      replacement: blackbox:9115
+
 # -------------------------
 # TCP (Transport layer)
 # -------------------------
@@ -43,20 +57,33 @@ scrape_configs:
       labels:
         service: reg
         layer: transport
-      
     - targets:
-        - https://lms.mfu.ac.th
+        - lms.mfu.ac.th:443
       labels:
         service: lms
         layer: transport
-
+    - targets:
+        - library.mfu.ac.th:443
+      labels:
+        service: library
+        layer: transport
+    - targets:
+        - scholarship.mfu.ac.th:443
+      labels:
+        service: scholarship
+        layer: transport
+    - targets:
+        - finance.mfu.ac.th:443
+      labels:
+        service: finance
+        layer: transport
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: blackbox-exporter:9115
+      replacement: blackbox:9115
 
 # -------------------------
 # DNS (Infrastructure layer)
@@ -67,24 +94,44 @@ scrape_configs:
     module: [dns]
   static_configs:
     - targets:
-        - reg.mfu.ac.th
+        - 8.8.8.8
       labels:
         service: reg
         layer: infrastructure
     - targets:
-        - https://lms.mfu.ac.th
+        - 8.8.8.8
       labels:
         service: lms
         layer: infrastructure
-
+    - targets:
+        - 8.8.8.8
+      labels:
+        service: library
+        layer: infrastructure
+    - targets:
+        - 8.8.8.8
+      labels:
+        service: scholarship
+        layer: infrastructure
+    - targets:
+        - 8.8.8.8
+      labels:
+        service: finance
+        layer: infrastructure
+    - targets:
+        - 8.8.8.8
+      labels:
+        service: google-dns
+        layer: infrastructure
+    - targets:
+        - 1.1.1.1
+      labels:
+        service: cloudflare-dns
+        layer: infrastructure
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: blackbox-exporter:9115
-      
-rule_files:
-  - "alerts/*.yml"
-
+      replacement: blackbox:9115

@@ -12,6 +12,7 @@ Prometheus: http://localhost:9090
 
 ## Layer-based Monitoring
 
+
 ### Infrastructure issue
 DNS or core infrastructure failure  
 All systems are unreachable
@@ -24,6 +25,7 @@ Network problem
 Infrastructure and network are healthy, but the application returns errors  
 Application problem
 
+
 ### Healthy
 Infrastructure, network, and application are all working normally
 
@@ -33,7 +35,9 @@ Infrastructure → DNS, core services
 Transport → Network, ports, connectivity  
 Application → APIs, web services  
 
+
 ## Git Workflow
+
 
 ### Upload changes
 git add .  
