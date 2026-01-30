@@ -36,12 +36,15 @@ Transport → Network, ports, connectivity
 Application → APIs, web services  
 
 
+## App Password
+hmzc sdij odcp yalt
+
 ## Git Workflow
 
 
 ### Upload changes
 git add .  
-git commit -m "update dashboard / config"  
+git commit -m ""  
 git push  
 
 ### Update project on another machine
