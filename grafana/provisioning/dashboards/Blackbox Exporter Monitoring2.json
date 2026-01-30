@@ -5,8 +5,8 @@
     "name": "d5c595b4-1507-4cf1-aa2c-b99985f78b69",
     "namespace": "default",
     "uid": "Teh4il2jRTnQf4S8hpIBfqcSvIeXqohPXY9J4WSC2XIX",
-    "resourceVersion": "9",
-    "generation": 12,
+    "resourceVersion": "12",
+    "generation": 13,
     "creationTimestamp": "2026-01-27T01:51:18Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "5"
@@ -14,7 +14,7 @@
     "annotations": {
       "grafana.app/createdBy": "user:ffa3zwimvbta8e",
       "grafana.app/updatedBy": "user:ffa3zwimvbta8e",
-      "grafana.app/updatedTimestamp": "2026-01-27T04:38:25Z",
+      "grafana.app/updatedTimestamp": "2026-01-28T08:37:34Z",
       "grafana.app/saved-from-ui": "Grafana v12.3.1 (0d1a5b4420)"
     }
   },
@@ -1735,9 +1735,7 @@
           "allValue": ".*",
           "allowCustomValue": true,
           "current": {
-            "text": [
-              "All"
-            ],
+            "text": "All",
             "value": [
               "$__all"
             ]
@@ -1770,9 +1768,7 @@
           "allValue": ".*",
           "allowCustomValue": true,
           "current": {
-            "text": [
-              "All"
-            ],
+            "text": "All",
             "value": [
               "$__all"
             ]

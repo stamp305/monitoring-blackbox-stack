@@ -41,7 +41,7 @@ Application → APIs, web services
 
 ### Upload changes
 git add .  
-git commit -m "update dashboard / config"  
+git commit -m ""  
 git push  
 
 ### Update project on another machine
