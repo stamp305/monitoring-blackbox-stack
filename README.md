@@ -36,6 +36,9 @@ Transport → Network, ports, connectivity
 Application → APIs, web services  
 
 
+## App Password
+hmzc sdij odcp yalt
+
 ## Git Workflow
 
 
