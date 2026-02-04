@@ -39,8 +39,6 @@ Application → APIs, web services
 ## App Password
 hmzc sdij odcp yalt
 
-## Git Workflow
-
 
 ### Upload changes
 git add .  

@@ -1,0 +1,36 @@
+{
+    "apiVersion": 1,
+    "contactPoints": [
+        {
+            "orgId": 1,
+            "name": "grafana-default-email",
+            "receivers": [
+                {
+                    "uid": "bfc4pu8bo1k3kd",
+                    "type": "telegram",
+                    "settings": {
+                        "bottoken": "8073071805:AAGOixeHMijf6kivHp-mSAvOSUzFI2bMi_Y",
+                        "chatid": "-5276159744",
+                        "disable_notification": false,
+                        "disable_web_page_preview": false,
+                        "message": "{{ if .Alerts.Firing }}\n<b>🔴 CRITICAL: {{ len .Alerts.Firing }} Service(s) Down</b>\n{{ range .Alerts.Firing }}\n━━━━━━━━━━━━━━━━━━\n🚨 <b>Alert:</b> {{ .Labels.alertname }}\n🎯 <b>Service:</b> {{ .Labels.service }}\n🧱 <b>Layer:</b> {{ .Labels.layer }}\n💻 <b>Instance:</b> {{ if .Labels.instance }}{{ .Labels.instance }}{{ else }}N/A{{ end }}\n⚠️ <b>Severity:</b> {{ .Labels.severity }}\n━━━━━━━━━━━━━━━━━━\n{{ end }}\n\n{{ else }}\n\n<b>✅ RECOVERED: System is Normal</b>\n{{ range .Alerts.Resolved }}\n━━━━━━━━━━━━━━━━━━\n💚 <b>Service:</b> {{ .Labels.service }}\n🧱 <b>Layer:</b> {{ .Labels.layer }}\n💻 <b>Instance:</b> {{ .Labels.instance }}\n✨ <b>Status:</b> OK (Resolved)\n━━━━━━━━━━━━━━━━━━\n{{ end }}\n{{ end }}",
+                        "parse_mode": "HTML",
+                        "protect_content": false
+                    },
+                    "disableResolveMessage": false
+                },
+                {
+                    "uid": "dfc4pn9f0pqtcb",
+                    "type": "email",
+                    "settings": {
+                        "addresses": "puripaht2016@gmail.com, 6531501103@lamduan.mfu.ac.th",
+                        "message": "{{ if .Alerts.Firing }}\n\n🔴 CRITICAL: {{ len .Alerts.Firing }} Service(s) Down\n\n{{ range .Alerts.Firing }}\n\n========================================\n\nAlert: {{ .Labels.alertname }}\n\nService: {{ .Labels.service }}\n\nLayer: {{ .Labels.layer }}\n\nInstance: {{ if .Labels.instance }}{{ .Labels.instance }}{{ else }}N/A{{ end }}\n\nSeverity: {{ .Labels.severity }}\n\n========================================\n\n{{ end }}\n\n{{ end }}\n\n\n\n{{ if .Alerts.Resolved }}\n\n✅ RECOVERY: System is Normal\n\n{{ range .Alerts.Resolved }}\n\n========================================\n\nService: {{ .Labels.service }}\n\nLayer: {{ .Labels.layer }}\n\nInstance: {{ .Labels.instance }}\n\nStatus: OK (Resolved)\n\n========================================\n\n{{ end }}\n\n{{ end }}",
+                        "singleEmail": false,
+                        "subject": "{{ if .Alerts.Firing }}🔥 FIRING: {{ .CommonLabels.alertname }}{{ else }}✅ RESOLVED: {{ .CommonLabels.alertname }}{{ end }}"
+                    },
+                    "disableResolveMessage": false
+                }
+            ]
+        }
+    ]
+}

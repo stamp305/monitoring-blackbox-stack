@@ -2,20 +2,20 @@
   "apiVersion": "dashboard.grafana.app/v2beta1",
   "kind": "Dashboard",
   "metadata": {
-    "name": "d5c595b4-1507-4cf1-aa2c-b99985f78b69",
+    "name": "adb622c",
     "namespace": "default",
-    "uid": "Teh4il2jRTnQf4S8hpIBfqcSvIeXqohPXY9J4WSC2XIX",
-    "resourceVersion": "13",
-    "generation": 14,
-    "creationTimestamp": "2026-01-27T01:51:18Z",
+    "uid": "zFzUZYrUHI042HHrV8VYxjgXXmUvUDD41zssMObxm70X",
+    "resourceVersion": "2",
+    "generation": 5,
+    "creationTimestamp": "2026-02-03T13:03:58Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "5"
+      "grafana.app/deprecatedInternalID": "1"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:ffa3zwimvbta8e",
-      "grafana.app/updatedBy": "user:ffa3zwimvbta8e",
-      "grafana.app/updatedTimestamp": "2026-01-30T01:38:53Z",
-      "grafana.app/saved-from-ui": "Grafana v12.3.1 (0d1a5b4420)"
+      "grafana.app/createdBy": "user:dfc4mzckcuqyof",
+      "grafana.app/updatedBy": "user:dfc6wrii639c0b",
+      "grafana.app/updatedTimestamp": "2026-02-04T07:40:17Z",
+      "grafana.app/folder": ""
     }
   },
   "spec": {
@@ -62,7 +62,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "probe_success{job=\"blackbox-http\"}",
+                        "expr": "last_over_time(probe_success{job=\"blackbox-http\"}[5m])",
                         "format": "table",
                         "legendFormat": "__auto",
                         "range": true
@@ -159,7 +159,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (service) (\r\n  probe_dns_lookup_time_seconds{service!~\"google-dns|cloudflare-dns\"}\r\n)\r\n",
+                        "expr": "avg by (service) (last_over_time(probe_dns_lookup_time_seconds{service!~\"google-dns|cloudflare-dns\"}[5m]))",
                         "legendFormat": "{{service}} ",
                         "range": true
                       },
@@ -273,7 +273,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "count(\r\n  max by (service) (probe_success)\r\n)\r\n",
+                        "expr": "count(max by (service) (last_over_time(probe_success[5m])))",
                         "format": "table",
                         "legendFormat": "__auto",
                         "range": true
@@ -359,7 +359,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (\r\n    min by (service) (probe_success) * 2\r\n  + max by (service) (probe_success)\r\n  ) == 3\r\n)\r\n",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 3)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "UP",
@@ -383,7 +383,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (\r\n    min by (service) (probe_success) * 2\r\n  + max by (service) (probe_success)\r\n  ) == 1\r\n)\r\n",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 1)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "DEGRADED",
@@ -407,7 +407,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (\r\n    min by (service) (probe_success) * 2\r\n  + max by (service) (probe_success)\r\n  ) == 0\r\n)\r\n",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 0)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "DOWN",
@@ -539,6 +539,43 @@
           }
         }
       },
+      "panel-16": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 16,
+          "links": [],
+          "title": "New panel",
+          "vizConfig": {
+            "group": "text",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "<iframe \n    src=\"http://localhost:5000\" \n    width=\"100%\" \n    height=\"550px\" \n    frameborder=\"0\" \n    style=\"border: none; background: transparent;\">\n</iframe>",
+                "mode": "html"
+              }
+            },
+            "version": "12.3.1"
+          }
+        }
+      },
       "panel-2": {
         "kind": "Panel",
         "spec": {
@@ -558,7 +595,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(probe_duration_seconds{job=\"blackbox-http\"})",
+                        "expr": "avg(last_over_time(probe_duration_seconds{job=\"blackbox-http\"}[5m]))",
                         "legendFormat": "__auto",
                         "range": true
                       },
@@ -644,7 +681,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "probe_success{job=\"blackbox-tcp\"}",
+                        "expr": "last_over_time(probe_success{job=\"blackbox-tcp\"}[5m])",
                         "format": "table",
                         "legendFormat": "__auto",
                         "range": true
@@ -745,7 +782,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(probe_success) * 100",
+                        "expr": "avg(last_over_time(probe_success[5m])) * 100",
                         "format": "table",
                         "legendFormat": "__auto",
                         "range": true
@@ -831,7 +868,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "probe_duration_seconds{job=\"blackbox-http\"}",
+                        "expr": "last_over_time(probe_duration_seconds{job=\"blackbox-http\"}[5m])",
                         "legendFormat": "{{service}} ",
                         "range": true
                       },
@@ -946,7 +983,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (service, layer) (\r\n  probe_duration_seconds{job=\"blackbox-tcp\"}\r\n)\r\n",
+                        "expr": "avg by (service, layer) (last_over_time(probe_duration_seconds{job=\"blackbox-tcp\"}[5m]))",
                         "legendFormat": "{{service}}  ",
                         "range": true
                       },
@@ -1078,7 +1115,9 @@
                   }
                 }
               ],
-              "queryOptions": {},
+              "queryOptions": {
+                "interval": "15s"
+              },
               "transformations": [
                 {
                   "kind": "organize",
@@ -1348,7 +1387,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (probe_success == 1)\r\n  and\r\n  (probe_duration_seconds <= 2)\r\n)\r\n",
+                        "expr": "count((last_over_time(probe_success[5m]) == 1) and (last_over_time(probe_duration_seconds[5m]) <= 2))",
                         "format": "time_series",
                         "instant": true,
                         "legendFormat": "UP",
@@ -1371,7 +1410,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "count(\r\n  (probe_success == 1)\r\n  and\r\n  (probe_duration_seconds > 2)\r\n  and\r\n  (probe_duration_seconds <= 5)\r\n)\r\n",
+                        "expr": "count((last_over_time(probe_success[5m]) == 1) and (last_over_time(probe_duration_seconds[5m]) > 2))",
                         "instant": false,
                         "legendFormat": "Slow",
                         "range": true
@@ -1394,7 +1433,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (probe_success == 0)\r\n  or\r\n  (probe_duration_seconds > 5)\r\n)\r\n",
+                        "expr": "count((last_over_time(probe_success[5m]) == 0) or (last_over_time(probe_duration_seconds[5m]) > 5))",
                         "format": "time_series",
                         "instant": true,
                         "legendFormat": "DOWN",
@@ -1418,7 +1457,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(probe_success)\r\n",
+                        "expr": "count(last_over_time(probe_success[5m]))",
                         "format": "time_series",
                         "instant": true,
                         "legendFormat": "Total",
@@ -1559,9 +1598,9 @@
             "spec": {
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-8"
+                "name": "panel-16"
               },
-              "height": 8,
+              "height": 10,
               "width": 12,
               "x": 0,
               "y": 0
@@ -1574,7 +1613,7 @@
                 "kind": "ElementReference",
                 "name": "panel-11"
               },
-              "height": 8,
+              "height": 10,
               "width": 3,
               "x": 12,
               "y": 0
@@ -1587,7 +1626,7 @@
                 "kind": "ElementReference",
                 "name": "panel-4"
               },
-              "height": 8,
+              "height": 10,
               "width": 3,
               "x": 15,
               "y": 0
@@ -1600,7 +1639,7 @@
                 "kind": "ElementReference",
                 "name": "panel-3"
               },
-              "height": 8,
+              "height": 10,
               "width": 2,
               "x": 18,
               "y": 0
@@ -1613,7 +1652,7 @@
                 "kind": "ElementReference",
                 "name": "panel-1"
               },
-              "height": 8,
+              "height": 10,
               "width": 2,
               "x": 20,
               "y": 0
@@ -1626,7 +1665,7 @@
                 "kind": "ElementReference",
                 "name": "panel-2"
               },
-              "height": 8,
+              "height": 10,
               "width": 2,
               "x": 22,
               "y": 0
@@ -1637,12 +1676,12 @@
             "spec": {
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-15"
+                "name": "panel-8"
               },
               "height": 8,
               "width": 12,
               "x": 0,
-              "y": 8
+              "y": 10
             }
           },
           {
@@ -1655,7 +1694,7 @@
               "height": 8,
               "width": 12,
               "x": 12,
-              "y": 8
+              "y": 10
             }
           },
           {
@@ -1663,25 +1702,12 @@
             "spec": {
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-5"
-              },
-              "height": 8,
-              "width": 24,
-              "x": 0,
-              "y": 16
-            }
-          },
-          {
-            "kind": "GridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-10"
+                "name": "panel-15"
               },
               "height": 8,
               "width": 12,
               "x": 0,
-              "y": 24
+              "y": 18
             }
           },
           {
@@ -1694,7 +1720,33 @@
               "height": 8,
               "width": 12,
               "x": 12,
-              "y": 24
+              "y": 18
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-10"
+              },
+              "height": 8,
+              "width": 12,
+              "x": 0,
+              "y": 26
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-5"
+              },
+              "height": 8,
+              "width": 12,
+              "x": 12,
+              "y": 26
             }
           }
         ]
@@ -1708,7 +1760,7 @@
       "monitoring"
     ],
     "timeSettings": {
-      "autoRefresh": "5s",
+      "autoRefresh": "",
       "autoRefreshIntervals": [
         "5s",
         "10s",
@@ -1727,7 +1779,7 @@
       "timezone": "browser",
       "to": "now"
     },
-    "title": "Blackbox Exporter Monitoring2",
+    "title": "Blackbox Exporter Monitoring",
     "variables": [
       {
         "kind": "QueryVariable",
