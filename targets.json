@@ -1,0 +1,62 @@
+[
+    {
+        "targets": [
+            "https://www.google.com"
+        ],
+        "labels": {
+            "service": "google-test",
+            "layer": "application",
+            "module": "http_2xx"
+        }
+    },
+    {
+        "targets": [
+            "www.google.com:443"
+        ],
+        "labels": {
+            "service": "google-test",
+            "layer": "transport",
+            "module": "tcp_connect"
+        }
+    },
+    {
+        "targets": [
+            "8.8.8.8"
+        ],
+        "labels": {
+            "service": "google-test",
+            "layer": "infrastructure",
+            "module": "icmp"
+        }
+    },
+    {
+        "targets": [
+            "https://www.facebook.com/home.php"
+        ],
+        "labels": {
+            "service": "facebook",
+            "layer": "application",
+            "module": "http_2xx"
+        }
+    },
+    {
+        "targets": [
+            "www.facebook.com:443"
+        ],
+        "labels": {
+            "service": "facebook",
+            "layer": "transport",
+            "module": "tcp_connect"
+        }
+    },
+    {
+        "targets": [
+            "8.8.8.8"
+        ],
+        "labels": {
+            "service": "facebook",
+            "layer": "infrastructure",
+            "module": "icmp"
+        }
+    }
+]

@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   blackbox:
-    image: prom/blackbox-exporter
+    image: prom/blackbox-exporter:latest
     container_name: blackbox
     ports:
       - "9115:9115"
@@ -17,39 +15,67 @@ services:
       - "1.1.1.1"
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
     container_name: prometheus
     ports:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./targets.json:/etc/prometheus/targets.json  
       - prometheus-data:/prometheus
     networks:
       - monitoring
 
   grafana:
-    image: grafana/grafana:11.2.2
+    image: grafana/grafana:latest
     container_name: grafana
     ports:
-      - "3001:3000"
+      - "3000:3000"
     environment:
-    - GF_SMTP_ENABLED=true
-    - GF_SMTP_HOST=smtp.gmail.com:587
-    - GF_SMTP_USER=yourmail@gmail.com
-    - GF_SMTP_PASSWORD=APP_PASSWORD
-    - GF_SMTP_FROM_ADDRESS=yourmail@gmail.com
-    - GF_SMTP_FROM_NAME=Grafana Alert
+      - GF_PANELS_DISABLE_SANITIZE_HTML=true
+      
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_GOOGLE_AUTO_ASSIGN_ORG_ROLE=Admin
+      - GF_SERVER_ROOT_URL=http://localhost:3000
+      - GF_AUTH_GOOGLE_ENABLED=true
+      - GF_AUTH_GOOGLE_CLIENT_ID= "CHANGE_ME"
+      - GF_AUTH_GOOGLE_CLIENT_SECRET= "CHANGE_ME"
+      - GF_AUTH_GOOGLE_SCOPES=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
+      - GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/auth
+      - GF_AUTH_GOOGLE_TOKEN_URL=https://accounts.google.com/o/oauth2/token
+      - GF_AUTH_GOOGLE_API_URL=https://www.googleapis.com/oauth2/v1/userinfo
+      - GF_AUTH_GOOGLE_ALLOWED_DOMAINS=mfu.ac.th lamduan.mfu.ac.th
+      - GF_AUTH_GOOGLE_ALLOW_SIGN_UP=true
+      
+      - GF_SMTP_ENABLED=true
+      - GF_SMTP_HOST=smtp.gmail.com:465
+      - GF_SMTP_USER=puripaht2016@gmail.com
+      - GF_SMTP_PASSWORD=hmzc sdij odcp yalt
+      - GF_SMTP_FROM_ADDRESS=puripaht2016@gmail.com
+      - GF_SMTP_FROM_NAME=Grafana Alert
+      - GF_SMTP_SKIP_VERIFY=false
     volumes:
-    - grafana-data:/var/lib/grafana
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/var/lib/grafana/provisioning/dashboards
     depends_on:
       - prometheus
     networks:
       - monitoring
 
-networks:
-  monitoring:
-    driver: bridge
+  service-manager:
+    build: ./manager
+    container_name: service-manager
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./targets.json:/data/targets.json 
+    networks:
+      - monitoring
 
 volumes:
   grafana-data:
   prometheus-data:
+
+networks:
+  monitoring:
+    driver: bridge
