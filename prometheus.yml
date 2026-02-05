@@ -2,9 +2,7 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  # เรายุบรวมทุกอย่างเหลือแค่ Job เดียว
-  # เพราะไฟล์ targets.json (ที่สร้างจาก Python)
-  # มันระบุ module (http, tcp, icmp) มาให้ในตัวแล้ว
+
   - job_name: 'blackbox-dynamic'
     metrics_path: /probe
     
@@ -13,19 +11,14 @@ scrape_configs:
         - '/etc/prometheus/targets.json'
     
     relabel_configs:
-      # 1. อ่านค่า 'module' จากไฟล์ JSON แล้วส่งไปบอก Blackbox
-      # (สำคัญมาก! บรรทัดนี้ทำให้มันรู้ว่าต้องยิง Ping, TCP หรือ HTTP)
       - source_labels: [module]
         target_label: __param_module
       
-      # 2. เอา URL เป้าหมายไปใส่ในพารามิเตอร์ target
       - source_labels: [__address__]
         target_label: __param_target
       
-      # 3. สร้าง Label 'instance' ให้สวยงามในกราฟ
       - source_labels: [__param_target]
         target_label: instance
       
-      # 4. ส่งคำขอไปที่ Container Blackbox (Port 9115)
       - target_label: __address__
         replacement: blackbox:9115

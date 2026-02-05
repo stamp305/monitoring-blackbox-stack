@@ -1,20 +1,20 @@
 [
     {
         "targets": [
-            "https://www.google.com"
+            "https://reg.mfu.ac.th/backend/"
         ],
         "labels": {
-            "service": "google-test",
+            "service": "reg",
             "layer": "application",
             "module": "http_2xx"
         }
     },
     {
         "targets": [
-            "www.google.com:443"
+            "reg.mfu.ac.th:443"
         ],
         "labels": {
-            "service": "google-test",
+            "service": "reg",
             "layer": "transport",
             "module": "tcp_connect"
         }
@@ -24,27 +24,27 @@
             "8.8.8.8"
         ],
         "labels": {
-            "service": "google-test",
+            "service": "reg",
             "layer": "infrastructure",
             "module": "icmp"
         }
     },
     {
         "targets": [
-            "https://www.facebook.com/home.php"
+            "https://lms.mfu.ac.th"
         ],
         "labels": {
-            "service": "facebook",
+            "service": "lms",
             "layer": "application",
             "module": "http_2xx"
         }
     },
     {
         "targets": [
-            "www.facebook.com:443"
+            "lms.mfu.ac.th:443"
         ],
         "labels": {
-            "service": "facebook",
+            "service": "lms",
             "layer": "transport",
             "module": "tcp_connect"
         }
@@ -54,7 +54,97 @@
             "8.8.8.8"
         ],
         "labels": {
-            "service": "facebook",
+            "service": "lms",
+            "layer": "infrastructure",
+            "module": "icmp"
+        }
+    },
+    {
+        "targets": [
+            "https://library.mfu.ac.th"
+        ],
+        "labels": {
+            "service": "library",
+            "layer": "application",
+            "module": "http_2xx"
+        }
+    },
+    {
+        "targets": [
+            "library.mfu.ac.th:443"
+        ],
+        "labels": {
+            "service": "library",
+            "layer": "transport",
+            "module": "tcp_connect"
+        }
+    },
+    {
+        "targets": [
+            "8.8.8.8"
+        ],
+        "labels": {
+            "service": "library",
+            "layer": "infrastructure",
+            "module": "icmp"
+        }
+    },
+    {
+        "targets": [
+            "https://scholarship.mfu.ac.th"
+        ],
+        "labels": {
+            "service": "scholarship",
+            "layer": "application",
+            "module": "http_2xx"
+        }
+    },
+    {
+        "targets": [
+            "scholarship.mfu.ac.th:443"
+        ],
+        "labels": {
+            "service": "scholarship",
+            "layer": "transport",
+            "module": "tcp_connect"
+        }
+    },
+    {
+        "targets": [
+            "8.8.8.8"
+        ],
+        "labels": {
+            "service": "scholarship",
+            "layer": "infrastructure",
+            "module": "icmp"
+        }
+    },
+    {
+        "targets": [
+            "https://finance.mfu.ac.th"
+        ],
+        "labels": {
+            "service": "finance",
+            "layer": "application",
+            "module": "http_2xx"
+        }
+    },
+    {
+        "targets": [
+            "finance.mfu.ac.th:443"
+        ],
+        "labels": {
+            "service": "finance",
+            "layer": "transport",
+            "module": "tcp_connect"
+        }
+    },
+    {
+        "targets": [
+            "8.8.8.8"
+        ],
+        "labels": {
+            "service": "finance",
             "layer": "infrastructure",
             "module": "icmp"
         }

@@ -18,3 +18,9 @@ modules:
       transport_protocol: udp
       query_type: A
       query_name: mfu.ac.th
+
+  icmp:
+    prober: icmp
+    timeout: 5s
+    icmp:
+      preferred_ip_protocol: "ip4"
