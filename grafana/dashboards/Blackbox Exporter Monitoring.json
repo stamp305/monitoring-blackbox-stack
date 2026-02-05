@@ -5,8 +5,8 @@
     "name": "blackbox-final",
     "namespace": "default",
     "uid": "NQ4L25v5pH6PxxWznaBEcaIHrjXLygFgwgtSBgGJddMX",
-    "resourceVersion": "5",
-    "generation": 5,
+    "resourceVersion": "8",
+    "generation": 9,
     "creationTimestamp": "2026-02-05T03:50:25Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "4"
@@ -14,7 +14,8 @@
     "annotations": {
       "grafana.app/createdBy": "user:dfc6wrii639c0b",
       "grafana.app/updatedBy": "user:dfc6wrii639c0b",
-      "grafana.app/updatedTimestamp": "2026-02-05T06:00:54Z"
+      "grafana.app/updatedTimestamp": "2026-02-05T08:02:59Z",
+      "grafana.app/saved-from-ui": "Grafana v12.3.1 (3a1c80ca7c)"
     }
   },
   "spec": {
@@ -563,7 +564,7 @@
                   "showLineNumbers": false,
                   "showMiniMap": false
                 },
-                "content": "<iframe \n    src=\"http://localhost:5000\" \n    width=\"100%\" \n    height=\"100%\" \n    frameborder=\"0\" \n    style=\"border: none; background: transparent;\">\n</iframe>",
+                "content": "<iframe \n    src=\"http://172.25.29.181:5000\" \n    width=\"100%\" \n    height=\"100%\" \n    frameborder=\"0\" \n    style=\"border: none; background: transparent;\">\n</iframe>",
                 "mode": "html"
               }
             },
@@ -1548,7 +1549,7 @@
     "preload": false,
     "tags": [],
     "timeSettings": {
-      "autoRefresh": "",
+      "autoRefresh": "auto",
       "autoRefreshIntervals": [
         "5s",
         "10s",
@@ -1567,7 +1568,7 @@
       "timezone": "",
       "to": "now"
     },
-    "title": "Service Monitor (Final Fixed)",
+    "title": "Service Monitor ",
     "variables": []
   },
   "status": {}
