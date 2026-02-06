@@ -1,42 +1,11 @@
 [
     {
         "targets": [
-            "https://reg.mfu.ac.th/backend/"
-        ],
-        "labels": {
-            "service": "reg",
-            "layer": "application",
-            "module": "http_2xx"
-        }
-    },
-    {
-        "targets": [
             "reg.mfu.ac.th:443"
         ],
         "labels": {
             "service": "reg",
-            "layer": "transport",
             "module": "tcp_connect"
-        }
-    },
-    {
-        "targets": [
-            "8.8.8.8"
-        ],
-        "labels": {
-            "service": "reg",
-            "layer": "infrastructure",
-            "module": "icmp"
-        }
-    },
-    {
-        "targets": [
-            "https://lms.mfu.ac.th"
-        ],
-        "labels": {
-            "service": "lms",
-            "layer": "application",
-            "module": "http_2xx"
         }
     },
     {
@@ -45,28 +14,7 @@
         ],
         "labels": {
             "service": "lms",
-            "layer": "transport",
             "module": "tcp_connect"
-        }
-    },
-    {
-        "targets": [
-            "8.8.8.8"
-        ],
-        "labels": {
-            "service": "lms",
-            "layer": "infrastructure",
-            "module": "icmp"
-        }
-    },
-    {
-        "targets": [
-            "https://library.mfu.ac.th"
-        ],
-        "labels": {
-            "service": "library",
-            "layer": "application",
-            "module": "http_2xx"
         }
     },
     {
@@ -75,28 +23,7 @@
         ],
         "labels": {
             "service": "library",
-            "layer": "transport",
             "module": "tcp_connect"
-        }
-    },
-    {
-        "targets": [
-            "8.8.8.8"
-        ],
-        "labels": {
-            "service": "library",
-            "layer": "infrastructure",
-            "module": "icmp"
-        }
-    },
-    {
-        "targets": [
-            "https://scholarship.mfu.ac.th"
-        ],
-        "labels": {
-            "service": "scholarship",
-            "layer": "application",
-            "module": "http_2xx"
         }
     },
     {
@@ -105,28 +32,7 @@
         ],
         "labels": {
             "service": "scholarship",
-            "layer": "transport",
             "module": "tcp_connect"
-        }
-    },
-    {
-        "targets": [
-            "8.8.8.8"
-        ],
-        "labels": {
-            "service": "scholarship",
-            "layer": "infrastructure",
-            "module": "icmp"
-        }
-    },
-    {
-        "targets": [
-            "https://finance.mfu.ac.th"
-        ],
-        "labels": {
-            "service": "finance",
-            "layer": "application",
-            "module": "http_2xx"
         }
     },
     {
@@ -135,18 +41,16 @@
         ],
         "labels": {
             "service": "finance",
-            "layer": "transport",
             "module": "tcp_connect"
         }
     },
     {
         "targets": [
-            "8.8.8.8"
+            "eoffice.mfu.ac.th:443"
         ],
         "labels": {
-            "service": "finance",
-            "layer": "infrastructure",
-            "module": "icmp"
+            "service": "e-office",
+            "module": "tcp_connect"
         }
     }
 ]

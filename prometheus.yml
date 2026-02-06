@@ -9,7 +9,8 @@ scrape_configs:
     file_sd_configs:
       - files:
         - '/etc/prometheus/targets.json'
-    
+        refresh_interval: 5s
+
     relabel_configs:
       - source_labels: [module]
         target_label: __param_module

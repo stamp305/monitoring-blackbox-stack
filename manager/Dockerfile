@@ -1,5 +1,15 @@
-FROM python:3.9-slim
-RUN pip install flask
+FROM python:3.9-slim-buster
+
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
-COPY app.py .
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+
 CMD ["python", "app.py"]

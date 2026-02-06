@@ -5,16 +5,16 @@
     "name": "blackbox-final",
     "namespace": "default",
     "uid": "NQ4L25v5pH6PxxWznaBEcaIHrjXLygFgwgtSBgGJddMX",
-    "resourceVersion": "8",
-    "generation": 9,
+    "resourceVersion": "10",
+    "generation": 11,
     "creationTimestamp": "2026-02-05T03:50:25Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "4"
     },
     "annotations": {
       "grafana.app/createdBy": "user:dfc6wrii639c0b",
-      "grafana.app/updatedBy": "user:dfc6wrii639c0b",
-      "grafana.app/updatedTimestamp": "2026-02-05T08:02:59Z",
+      "grafana.app/updatedBy": "user:dfc4mzckcuqyof",
+      "grafana.app/updatedTimestamp": "2026-02-06T02:30:51Z",
       "grafana.app/saved-from-ui": "Grafana v12.3.1 (3a1c80ca7c)"
     }
   },
@@ -62,7 +62,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "min(last_over_time(probe_success{layer=\"application\"}[5m]))",
+                        "expr": "min(last_over_time(probe_success{layer=\"application\"}[5s]))",
                         "range": true
                       },
                       "version": "v0"
@@ -159,7 +159,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (service) (last_over_time(probe_dns_lookup_time_seconds{service!~\"google-dns|cloudflare-dns\"}[5m]))",
+                        "expr": "avg by (service) (last_over_time(probe_dns_lookup_time_seconds{service!~\"google-dns|cloudflare-dns\"}[5s]))",
                         "legendFormat": "{{service}}",
                         "range": true
                       },
@@ -269,7 +269,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "count(max by (service) (last_over_time(probe_success[5m])))",
+                        "expr": "count(max by (service) (last_over_time(probe_success[5s])))",
                         "instant": true,
                         "legendFormat": "__auto",
                         "range": false
@@ -355,7 +355,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 3)",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5s])) * 2 + max by (service) (last_over_time(probe_success[5s]))) == 3)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "UP",
@@ -379,7 +379,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 1)",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5s])) * 2 + max by (service) (last_over_time(probe_success[30s]))) == 1)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "DEGRADED",
@@ -403,7 +403,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 0)",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5s])) * 2 + max by (service) (last_over_time(probe_success[30s]))) == 0)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "DOWN",
@@ -564,7 +564,7 @@
                   "showLineNumbers": false,
                   "showMiniMap": false
                 },
-                "content": "<iframe \n    src=\"http://172.25.29.181:5000\" \n    width=\"100%\" \n    height=\"100%\" \n    frameborder=\"0\" \n    style=\"border: none; background: transparent;\">\n</iframe>",
+                "content": "<iframe \n    src=\"http://10.1.55.29:5000\" \n    width=\"100%\" \n    height=\"100%\" \n    frameborder=\"0\" \n    style=\"border: none; background: transparent;\">\n</iframe>",
                 "mode": "html"
               }
             },
@@ -591,7 +591,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg_over_time(probe_success[5m]) * 100\r\n",
+                        "expr": "avg_over_time(probe_success[5s]) * 100\r\n",
                         "format": "table",
                         "legendFormat": "__auto",
                         "range": true
@@ -804,7 +804,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "min(last_over_time(probe_success{layer=\"transport\"}[5m]))",
+                        "expr": "min(last_over_time(probe_success{layer=\"transport\"}[5s]))",
                         "range": true
                       },
                       "version": "v0"
@@ -901,7 +901,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(last_over_time(probe_success[5m])) * 100",
+                        "expr": "avg(last_over_time(probe_success[5s])) * 100",
                         "range": true
                       },
                       "version": "v0"
@@ -991,7 +991,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "last_over_time(probe_duration_seconds{layer=\"application\"}[5m])",
+                        "expr": "last_over_time(probe_duration_seconds{layer=\"application\"}[5s])",
                         "legendFormat": "{{service}}",
                         "range": true
                       },
@@ -1101,7 +1101,7 @@
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (service, layer) (last_over_time(probe_duration_seconds{job=\"blackbox-dynamic\", module=\"tcp_connect\"}[5m]))",
+                        "expr": "avg by (service, layer) (last_over_time(probe_duration_seconds{job=\"blackbox-dynamic\", module=\"tcp_connect\"}[5s]))",
                         "legendFormat": "{{service}}",
                         "range": true
                       },
@@ -1212,7 +1212,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count((last_over_time(probe_success[5m]) == 1) and (last_over_time(probe_duration_seconds[5m]) <= 2))",
+                        "expr": "count((last_over_time(probe_success[5s]) == 1) and (last_over_time(probe_duration_seconds[5s]) <= 2)) or vector(0)",
                         "format": "time_series",
                         "instant": true,
                         "legendFormat": "UP",
@@ -1236,7 +1236,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(last_over_time(probe_success[5m]))",
+                        "expr": "count(last_over_time(probe_success[5s]))",
                         "format": "time_series",
                         "instant": true,
                         "legendFormat": "Total",
@@ -1260,10 +1260,10 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count((last_over_time(probe_success[5m]) == 1) and (last_over_time(probe_duration_seconds[5m]) > 2))",
-                        "instant": false,
+                        "expr": "count((last_over_time(probe_success[5s]) == 1) and (last_over_time(probe_duration_seconds[5s]) > 2)) or vector(0)",
+                        "instant": true,
                         "legendFormat": "Slow",
-                        "range": true
+                        "range": false
                       },
                       "version": "v0"
                     },
@@ -1283,7 +1283,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count((last_over_time(probe_success[5m]) == 0) or (last_over_time(probe_duration_seconds[5m]) > 5))",
+                        "expr": "count((last_over_time(probe_success[5s]) == 0) or (last_over_time(probe_duration_seconds[5s]) > 15)) or vector(0)",
                         "format": "time_series",
                         "instant": true,
                         "legendFormat": "DOWN",
@@ -1549,7 +1549,7 @@
     "preload": false,
     "tags": [],
     "timeSettings": {
-      "autoRefresh": "auto",
+      "autoRefresh": "5s",
       "autoRefreshIntervals": [
         "5s",
         "10s",

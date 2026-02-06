@@ -204,9 +204,7 @@ HTML_TEMPLATE = """
                 
                 <div class="right-actions">
                     <div class="monitor-badges">
-                        <span class="badge app">APP</span>
                         <span class="badge tcp">TCP</span>
-                        <span class="badge infra">INFRA</span>
                     </div>
 
                     <form action="/delete" method="post" style="margin:0;">
@@ -240,7 +238,7 @@ def index():
             print(f"Error loading JSON: {e}")
             data = []
 
-    # จัดกลุ่มข้อมูลเพื่อแสดงผล
+    # จัดกลุ่มข้อมูลเพื่อแสดงผล (TCP-only format)
     for item in data:
         try:
             # แก้ไข: เพิ่มเช็คว่ามี key ครบไหม ป้องกัน error 'service' not in 'labels'
@@ -250,12 +248,8 @@ def index():
             svc_name = item['labels']['service']
             
             if svc_name not in grouped_services:
-                grouped_services[svc_name] = {'url': 'Unknown URL', 'layers': []}
-            
-            if item['labels'].get('layer') == 'application':
-                grouped_services[svc_name]['url'] = item['targets'][0]
-            
-            grouped_services[svc_name]['layers'].append(item['labels']['layer'])
+                # For TCP-only, show the target directly
+                grouped_services[svc_name] = {'url': item['targets'][0]}
         except:
             continue
 
@@ -272,16 +266,22 @@ def add_target():
         flash(f"Error: {message}")
         return redirect(url_for('index'))
 
-    # 2. Prepare Data
+    # 2. Prepare Data (TCP-only format)
     try:
         parsed = urlparse(full_url)
         domain = parsed.netloc
         if not domain: domain = full_url.split('/')[0]
+        
+        # Remove port if already specified, otherwise default to 443
+        if ':' in domain:
+            # URL already has port specified
+            target = domain
+        else:
+            # Default to port 443 for HTTPS
+            target = f"{domain}:443"
 
         new_entries = [
-            { "targets": [full_url], "labels": { "service": service_name, "layer": "application", "module": "http_2xx" } },
-            { "targets": [f"{domain}:443"], "labels": { "service": service_name, "layer": "transport", "module": "tcp_connect" } },
-            { "targets": [domain], "labels": { "service": service_name, "layer": "infrastructure", "module": "icmp" } }
+            { "targets": [target], "labels": { "service": service_name, "module": "tcp_connect" } }
         ]
         
         # 3. Save to JSON
