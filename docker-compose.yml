@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   blackbox:
     image: prom/blackbox-exporter:latest
@@ -8,6 +10,8 @@ services:
       - ./blackbox.yml:/etc/blackbox/blackbox.yml
     command:
       - "--config.file=/etc/blackbox/blackbox.yml"
+    cap_add:
+      - NET_RAW
     networks:
       - monitoring
     dns:
@@ -34,19 +38,30 @@ services:
     environment:
       - GF_PANELS_DISABLE_SANITIZE_HTML=true
       
-      - GF_AUTH_DISABLE_LOGIN_FORM=true
-      - GF_AUTH_GOOGLE_AUTO_ASSIGN_ORG_ROLE=Admin
-      - GF_SERVER_ROOT_URL=http://localhost:3000
+      # --- Basic Authentication (Keep for fallback) ---
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=13678
+      - GF_AUTH_DISABLE_LOGIN_FORM=false
+      - GF_USERS_ALLOW_SIGN_UP=false
+
+      # --- Google OAuth Configuration ---
+      - GF_SERVER_ROOT_URL=http://10.1.55.29.nip.io:3000
       - GF_AUTH_GOOGLE_ENABLED=true
-      - GF_AUTH_GOOGLE_CLIENT_ID= "CHANGE_ME"
-      - GF_AUTH_GOOGLE_CLIENT_SECRET= "CHANGE_ME"
-      - GF_AUTH_GOOGLE_SCOPES=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email
-      - GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/auth
-      - GF_AUTH_GOOGLE_TOKEN_URL=https://accounts.google.com/o/oauth2/token
+      # TODO: Replace with your actual Google OAuth credentials
+      - GF_AUTH_GOOGLE_CLIENT_ID=
+      - GF_AUTH_GOOGLE_CLIENT_SECRET=
+      - GF_AUTH_GOOGLE_SCOPES=openid email profile
+      - GF_AUTH_GOOGLE_AUTH_URL=https://accounts.google.com/o/oauth2/v2/auth
+      - GF_AUTH_GOOGLE_TOKEN_URL=https://oauth2.googleapis.com/token
       - GF_AUTH_GOOGLE_API_URL=https://www.googleapis.com/oauth2/v1/userinfo
-      - GF_AUTH_GOOGLE_ALLOWED_DOMAINS=mfu.ac.th lamduan.mfu.ac.th
+      - GF_AUTH_GOOGLE_ALLOWED_DOMAINS=mfu.ac.th lamduan.mfu.ac.th maf.ac.th
       - GF_AUTH_GOOGLE_ALLOW_SIGN_UP=true
       
+      # --- Role Mapping (Admin vs Viewer) ---
+      # wachirachet@mfu.ac.th gets Admin role, others get Viewer
+      - GF_AUTH_GOOGLE_ROLE_ATTRIBUTE_PATH=contains(email, 'wachirachet@mfu.ac.th') && 'Admin' || 'Viewer'
+      
+      # --- SMTP Configuration (Email Alerts) ---
       - GF_SMTP_ENABLED=true
       - GF_SMTP_HOST=smtp.gmail.com:465
       - GF_SMTP_USER=puripaht2016@gmail.com
@@ -54,6 +69,7 @@ services:
       - GF_SMTP_FROM_ADDRESS=puripaht2016@gmail.com
       - GF_SMTP_FROM_NAME=Grafana Alert
       - GF_SMTP_SKIP_VERIFY=false
+
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/dashboards:/var/lib/grafana/provisioning/dashboards

@@ -2,20 +2,20 @@
   "apiVersion": "dashboard.grafana.app/v2beta1",
   "kind": "Dashboard",
   "metadata": {
-    "name": "d5c595b4-1507-4cf1-aa2c-b99985f78b69",
+    "name": "blackbox-final",
     "namespace": "default",
-    "uid": "Teh4il2jRTnQf4S8hpIBfqcSvIeXqohPXY9J4WSC2XIX",
-    "resourceVersion": "13",
-    "generation": 14,
-    "creationTimestamp": "2026-01-27T01:51:18Z",
+    "uid": "NQ4L25v5pH6PxxWznaBEcaIHrjXLygFgwgtSBgGJddMX",
+    "resourceVersion": "8",
+    "generation": 9,
+    "creationTimestamp": "2026-02-05T03:50:25Z",
     "labels": {
-      "grafana.app/deprecatedInternalID": "5"
+      "grafana.app/deprecatedInternalID": "4"
     },
     "annotations": {
-      "grafana.app/createdBy": "user:ffa3zwimvbta8e",
-      "grafana.app/updatedBy": "user:ffa3zwimvbta8e",
-      "grafana.app/updatedTimestamp": "2026-01-30T01:38:53Z",
-      "grafana.app/saved-from-ui": "Grafana v12.3.1 (0d1a5b4420)"
+      "grafana.app/createdBy": "user:dfc6wrii639c0b",
+      "grafana.app/updatedBy": "user:dfc6wrii639c0b",
+      "grafana.app/updatedTimestamp": "2026-02-05T08:02:59Z",
+      "grafana.app/saved-from-ui": "Grafana v12.3.1 (3a1c80ca7c)"
     }
   },
   "spec": {
@@ -56,15 +56,13 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "probe_success{job=\"blackbox-http\"}",
-                        "format": "table",
-                        "legendFormat": "__auto",
+                        "expr": "min(last_over_time(probe_success{layer=\"application\"}[5m]))",
                         "range": true
                       },
                       "version": "v0"
@@ -80,7 +78,7 @@
           "description": "",
           "id": 1,
           "links": [],
-          "title": "HTTP Up",
+          "title": "HTTP Status",
           "vizConfig": {
             "group": "stat",
             "kind": "VizConfig",
@@ -91,12 +89,14 @@
                     {
                       "options": {
                         "0": {
+                          "color": "red",
                           "index": 1,
-                          "text": "DOWN🔴"
+                          "text": "DOWN"
                         },
                         "1": {
+                          "color": "green",
                           "index": 0,
-                          "text": "UP🟢"
+                          "text": "UP"
                         }
                       },
                       "type": "value"
@@ -106,12 +106,12 @@
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "dark-red",
+                        "color": "red",
                         "value": 0
                       },
                       {
-                        "color": "dark-green",
-                        "value": 0.9
+                        "color": "green",
+                        "value": 1
                       }
                     ]
                   }
@@ -120,7 +120,7 @@
               },
               "options": {
                 "colorMode": "value",
-                "graphMode": "area",
+                "graphMode": "none",
                 "justifyMode": "auto",
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
@@ -153,14 +153,14 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (service) (\r\n  probe_dns_lookup_time_seconds{service!~\"google-dns|cloudflare-dns\"}\r\n)\r\n",
-                        "legendFormat": "{{service}} ",
+                        "expr": "avg by (service) (last_over_time(probe_dns_lookup_time_seconds{service!~\"google-dns|cloudflare-dns\"}[5m]))",
+                        "legendFormat": "{{service}}",
                         "range": true
                       },
                       "version": "v0"
@@ -176,7 +176,7 @@
           "description": "",
           "id": 10,
           "links": [],
-          "title": "Service DNS ",
+          "title": "Service DNS Lookup",
           "vizConfig": {
             "group": "timeseries",
             "kind": "VizConfig",
@@ -226,10 +226,6 @@
                       {
                         "color": "green",
                         "value": 0
-                      },
-                      {
-                        "color": "red",
-                        "value": 80
                       }
                     ]
                   }
@@ -267,16 +263,16 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "count(\r\n  max by (service) (probe_success)\r\n)\r\n",
-                        "format": "table",
+                        "expr": "count(max by (service) (last_over_time(probe_success[5m])))",
+                        "instant": true,
                         "legendFormat": "__auto",
-                        "range": true
+                        "range": false
                       },
                       "version": "v0"
                     },
@@ -352,14 +348,14 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (\r\n    min by (service) (probe_success) * 2\r\n  + max by (service) (probe_success)\r\n  ) == 3\r\n)\r\n",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 3)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "UP",
@@ -376,14 +372,14 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (\r\n    min by (service) (probe_success) * 2\r\n  + max by (service) (probe_success)\r\n  ) == 1\r\n)\r\n",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 1)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "DEGRADED",
@@ -400,14 +396,14 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (\r\n    min by (service) (probe_success) * 2\r\n  + max by (service) (probe_success)\r\n  ) == 0\r\n)\r\n",
+                        "expr": "count((min by (service) (last_over_time(probe_success[5m])) * 2 + max by (service) (last_over_time(probe_success[5m]))) == 0)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "DOWN",
@@ -539,7 +535,44 @@
           }
         }
       },
-      "panel-2": {
+      "panel-16": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "",
+          "id": 16,
+          "links": [],
+          "title": "Service Manager",
+          "vizConfig": {
+            "group": "text",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              },
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "<iframe \n    src=\"http://172.25.29.181:5000\" \n    width=\"100%\" \n    height=\"100%\" \n    frameborder=\"0\" \n    style=\"border: none; background: transparent;\">\n</iframe>",
+                "mode": "html"
+              }
+            },
+            "version": "12.3.1"
+          }
+        }
+      },
+      "panel-17": {
         "kind": "Panel",
         "spec": {
           "data": {
@@ -552,13 +585,14 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "efc4ndvuz9lhcb"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(probe_duration_seconds{job=\"blackbox-http\"})",
+                        "expr": "avg_over_time(probe_success[5m]) * 100\r\n",
+                        "format": "table",
                         "legendFormat": "__auto",
                         "range": true
                       },
@@ -569,56 +603,182 @@
                 }
               ],
               "queryOptions": {},
-              "transformations": []
+              "transformations": [
+                {
+                  "kind": "organize",
+                  "spec": {
+                    "id": "organize",
+                    "options": {
+                      "excludeByName": {
+                        "Time": true,
+                        "Value": false,
+                        "job": true,
+                        "module": false
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Time": 0,
+                        "Value": 6,
+                        "instance": 2,
+                        "job": 3,
+                        "layer": 4,
+                        "module": 5,
+                        "service": 1
+                      },
+                      "renameByName": {
+                        "Value": "Availability",
+                        "module": ""
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "groupBy",
+                  "spec": {
+                    "id": "groupBy",
+                    "options": {
+                      "fields": {
+                        "Availability": {
+                          "aggregations": [
+                            "last"
+                          ],
+                          "operation": "aggregate"
+                        },
+                        "Value": {
+                          "aggregations": [
+                            "last"
+                          ],
+                          "operation": "aggregate"
+                        },
+                        "layer": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        },
+                        "service": {
+                          "aggregations": [],
+                          "operation": "groupby"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "sortBy",
+                  "spec": {
+                    "id": "sortBy",
+                    "options": {
+                      "fields": {},
+                      "sort": [
+                        {
+                          "field": "service"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
             }
           },
           "description": "",
-          "id": 2,
+          "id": 17,
           "links": [],
-          "title": "HTTP Latency (avg)",
+          "title": "Availability",
           "vizConfig": {
-            "group": "stat",
+            "group": "table",
             "kind": "VizConfig",
             "spec": {
               "fieldConfig": {
                 "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "center",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  },
+                  "decimals": 1,
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
+                        "color": "dark-red",
                         "value": 0
                       },
                       {
-                        "color": "#EAB839",
-                        "value": 1
+                        "color": "dark-yellow",
+                        "value": 90
                       },
                       {
-                        "color": "dark-red",
-                        "value": 3
+                        "color": "dark-green",
+                        "value": 99
                       }
                     ]
                   },
-                  "unit": "s"
+                  "unit": "percent"
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "layer"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "application": {
+                                "color": "semi-dark-blue",
+                                "index": 0
+                              },
+                              "infrastructure": {
+                                "color": "semi-dark-purple",
+                                "index": 2
+                              },
+                              "transport": {
+                                "color": "yellow",
+                                "index": 1
+                              }
+                            },
+                            "type": "value"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Availability (last)"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-background"
+                        }
+                      }
+                    ]
+                  }
+                ]
               },
               "options": {
-                "colorMode": "value",
-                "graphMode": "area",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "auto",
-                "wideLayout": true
+                "cellHeight": "md",
+                "showHeader": true,
+                "sortBy": []
               }
             },
             "version": "12.3.1"
@@ -638,15 +798,13 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "probe_success{job=\"blackbox-tcp\"}",
-                        "format": "table",
-                        "legendFormat": "__auto",
+                        "expr": "min(last_over_time(probe_success{layer=\"transport\"}[5m]))",
                         "range": true
                       },
                       "version": "v0"
@@ -662,7 +820,7 @@
           "description": "",
           "id": 3,
           "links": [],
-          "title": "TCP Up",
+          "title": "TCP Status",
           "vizConfig": {
             "group": "stat",
             "kind": "VizConfig",
@@ -673,12 +831,14 @@
                     {
                       "options": {
                         "0": {
+                          "color": "red",
                           "index": 1,
-                          "text": "DOWN🔴"
+                          "text": "DOWN"
                         },
                         "1": {
+                          "color": "green",
                           "index": 0,
-                          "text": "UP🟢"
+                          "text": "UP"
                         }
                       },
                       "type": "value"
@@ -688,16 +848,12 @@
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "green",
+                        "color": "red",
                         "value": 0
                       },
                       {
-                        "color": "red",
-                        "value": 80
-                      },
-                      {
-                        "color": "#EAB839",
-                        "value": 90
+                        "color": "green",
+                        "value": 1
                       }
                     ]
                   }
@@ -706,7 +862,7 @@
               },
               "options": {
                 "colorMode": "value",
-                "graphMode": "area",
+                "graphMode": "none",
                 "justifyMode": "auto",
                 "orientation": "auto",
                 "percentChangeColorMode": "standard",
@@ -739,15 +895,13 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(probe_success) * 100",
-                        "format": "table",
-                        "legendFormat": "__auto",
+                        "expr": "avg(last_over_time(probe_success[5m])) * 100",
                         "range": true
                       },
                       "version": "v0"
@@ -770,13 +924,16 @@
             "spec": {
               "fieldConfig": {
                 "defaults": {
+                  "color": {
+                    "mode": "thresholds"
+                  },
                   "max": 100,
                   "min": 0,
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "dark-red",
+                        "color": "red",
                         "value": 0
                       },
                       {
@@ -784,7 +941,7 @@
                         "value": 80
                       },
                       {
-                        "color": "dark-green",
+                        "color": "green",
                         "value": 90
                       }
                     ]
@@ -827,12 +984,15 @@
                   "spec": {
                     "hidden": false,
                     "query": {
+                      "datasource": {
+                        "name": "prometheus"
+                      },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "probe_duration_seconds{job=\"blackbox-http\"}",
-                        "legendFormat": "{{service}} ",
+                        "expr": "last_over_time(probe_duration_seconds{layer=\"application\"}[5m])",
+                        "legendFormat": "{{service}}",
                         "range": true
                       },
                       "version": "v0"
@@ -848,7 +1008,7 @@
           "description": "",
           "id": 5,
           "links": [],
-          "title": "HTTP Probe Duration",
+          "title": "HTTP Response Time",
           "vizConfig": {
             "group": "timeseries",
             "kind": "VizConfig",
@@ -867,7 +1027,7 @@
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
-                    "fillOpacity": 8,
+                    "fillOpacity": 10,
                     "gradientMode": "opacity",
                     "hideFrom": {
                       "legend": false,
@@ -877,7 +1037,7 @@
                     "insertNulls": false,
                     "lineInterpolation": "linear",
                     "lineWidth": 2,
-                    "pointSize": 1,
+                    "pointSize": 5,
                     "scaleDistribution": {
                       "type": "linear"
                     },
@@ -898,14 +1058,9 @@
                       {
                         "color": "green",
                         "value": 0
-                      },
-                      {
-                        "color": "red",
-                        "value": 80
                       }
                     ]
-                  },
-                  "unit": "s"
+                  }
                 },
                 "overrides": []
               },
@@ -940,14 +1095,14 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (service, layer) (\r\n  probe_duration_seconds{job=\"blackbox-tcp\"}\r\n)\r\n",
-                        "legendFormat": "{{service}}  ",
+                        "expr": "avg by (service, layer) (last_over_time(probe_duration_seconds{job=\"blackbox-dynamic\", module=\"tcp_connect\"}[5m]))",
+                        "legendFormat": "{{service}}",
                         "range": true
                       },
                       "version": "v0"
@@ -990,7 +1145,7 @@
                       "viz": false
                     },
                     "insertNulls": false,
-                    "lineInterpolation": "smooth",
+                    "lineInterpolation": "linear",
                     "lineWidth": 1,
                     "pointSize": 5,
                     "scaleDistribution": {
@@ -1013,18 +1168,9 @@
                       {
                         "color": "green",
                         "value": 0
-                      },
-                      {
-                        "color": "dark-yellow",
-                        "value": 0.3
-                      },
-                      {
-                        "color": "dark-red",
-                        "value": 1
                       }
                     ]
-                  },
-                  "unit": "s"
+                  }
                 },
                 "overrides": []
               },
@@ -1037,291 +1183,9 @@
                 },
                 "tooltip": {
                   "hideZeros": false,
-                  "hoverProximity": 20,
-                  "maxWidth": 600,
-                  "mode": "multi",
+                  "mode": "single",
                   "sort": "none"
                 }
-              }
-            },
-            "version": "12.3.1"
-          }
-        }
-      },
-      "panel-8": {
-        "kind": "Panel",
-        "spec": {
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "cfa47qene9c74b"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "avg_over_time(probe_success[5m]) * 100\r\n",
-                        "format": "table",
-                        "legendFormat": "__auto",
-                        "range": true
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "A"
-                  }
-                }
-              ],
-              "queryOptions": {},
-              "transformations": [
-                {
-                  "kind": "organize",
-                  "spec": {
-                    "id": "organize",
-                    "options": {
-                      "excludeByName": {
-                        "Time": true,
-                        "Value": false,
-                        "job": true
-                      },
-                      "includeByName": {},
-                      "indexByName": {
-                        "Value (last)": 2,
-                        "job": 3,
-                        "layer": 1,
-                        "service": 0
-                      },
-                      "renameByName": {
-                        "Value": "Availability",
-                        "Value (last)": "Availability",
-                        "layer": "",
-                        "service": ""
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "groupBy",
-                  "spec": {
-                    "id": "groupBy",
-                    "options": {
-                      "fields": {
-                        "Availability": {
-                          "aggregations": [
-                            "last"
-                          ],
-                          "operation": "aggregate"
-                        },
-                        "Value": {
-                          "aggregations": [
-                            "last"
-                          ],
-                          "operation": "aggregate"
-                        },
-                        "job": {
-                          "aggregations": [],
-                          "operation": "groupby"
-                        },
-                        "layer": {
-                          "aggregations": [],
-                          "operation": "groupby"
-                        },
-                        "service": {
-                          "aggregations": [],
-                          "operation": "groupby"
-                        }
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "sortBy",
-                  "spec": {
-                    "id": "sortBy",
-                    "options": {
-                      "fields": {},
-                      "sort": [
-                        {
-                          "desc": false,
-                          "field": "service"
-                        }
-                      ]
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "description": "",
-          "id": 8,
-          "links": [],
-          "title": "Availability",
-          "vizConfig": {
-            "group": "table",
-            "kind": "VizConfig",
-            "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "custom": {
-                    "align": "center",
-                    "cellOptions": {
-                      "type": "auto"
-                    },
-                    "footer": {
-                      "reducers": []
-                    },
-                    "inspect": false
-                  },
-                  "decimals": 2,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "dark-red",
-                        "value": 0
-                      },
-                      {
-                        "color": "dark-yellow",
-                        "value": 90
-                      },
-                      {
-                        "color": "dark-green",
-                        "value": 99
-                      }
-                    ]
-                  },
-                  "unit": "percent"
-                },
-                "overrides": [
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "Availability (last)"
-                    },
-                    "properties": [
-                      {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "type": "color-background"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "service"
-                    },
-                    "properties": [
-                      {
-                        "id": "mappings",
-                        "value": [
-                          {
-                            "options": {
-                              "finance": {
-                                "color": "green",
-                                "index": 0
-                              },
-                              "library": {
-                                "color": "blue",
-                                "index": 1
-                              },
-                              "lms": {
-                                "color": "orange",
-                                "index": 2
-                              },
-                              "reg": {
-                                "color": "purple",
-                                "index": 3
-                              },
-                              "scholarship": {
-                                "color": "yellow",
-                                "index": 4
-                              }
-                            },
-                            "type": "value"
-                          }
-                        ]
-                      },
-                      {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "applyToRow": false,
-                          "mode": "gradient",
-                          "type": "color-background"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "layer"
-                    },
-                    "properties": [
-                      {
-                        "id": "mappings",
-                        "value": [
-                          {
-                            "options": {
-                              "application": {
-                                "color": "super-light-blue",
-                                "index": 0
-                              },
-                              "infrastructure": {
-                                "color": "super-light-purple",
-                                "index": 2
-                              },
-                              "transport": {
-                                "color": "super-light-yellow",
-                                "index": 1
-                              }
-                            },
-                            "type": "value"
-                          }
-                        ]
-                      },
-                      {
-                        "id": "custom.cellOptions",
-                        "value": {
-                          "mode": "gradient",
-                          "type": "color-background"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "service"
-                    },
-                    "properties": [
-                      {
-                        "id": "links",
-                        "value": [
-                          {
-                            "title": "Service Detail",
-                            "url": "/d/${__dashboard.uid}?var-service=${__value.text}&var-layer=${__data.fields.layer}\r\n"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              "options": {
-                "cellHeight": "sm",
-                "frameIndex": 5,
-                "showHeader": true
               }
             },
             "version": "12.3.1"
@@ -1341,14 +1205,14 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (probe_success == 1)\r\n  and\r\n  (probe_duration_seconds <= 2)\r\n)\r\n",
+                        "expr": "count((last_over_time(probe_success[5m]) == 1) and (last_over_time(probe_duration_seconds[5m]) <= 2))",
                         "format": "time_series",
                         "instant": true,
                         "legendFormat": "UP",
@@ -1362,16 +1226,41 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
-                    "hidden": false,
+                    "hidden": true,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "count(\r\n  (probe_success == 1)\r\n  and\r\n  (probe_duration_seconds > 2)\r\n  and\r\n  (probe_duration_seconds <= 5)\r\n)\r\n",
+                        "exemplar": false,
+                        "expr": "count(last_over_time(probe_success[5m]))",
+                        "format": "time_series",
+                        "instant": true,
+                        "legendFormat": "Total",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "C"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "prometheus"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "count((last_over_time(probe_success[5m]) == 1) and (last_over_time(probe_duration_seconds[5m]) > 2))",
                         "instant": false,
                         "legendFormat": "Slow",
                         "range": true
@@ -1387,14 +1276,14 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "cfa47qene9c74b"
+                        "name": "prometheus"
                       },
                       "group": "prometheus",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\r\n  (probe_success == 0)\r\n  or\r\n  (probe_duration_seconds > 5)\r\n)\r\n",
+                        "expr": "count((last_over_time(probe_success[5m]) == 0) or (last_over_time(probe_duration_seconds[5m]) > 5))",
                         "format": "time_series",
                         "instant": true,
                         "legendFormat": "DOWN",
@@ -1404,55 +1293,10 @@
                     },
                     "refId": "A"
                   }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "hidden": false,
-                    "query": {
-                      "datasource": {
-                        "name": "cfa47qene9c74b"
-                      },
-                      "group": "prometheus",
-                      "kind": "DataQuery",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": false,
-                        "expr": "count(probe_success)\r\n",
-                        "format": "time_series",
-                        "instant": true,
-                        "legendFormat": "Total",
-                        "range": false
-                      },
-                      "version": "v0"
-                    },
-                    "refId": "C"
-                  }
                 }
               ],
               "queryOptions": {},
-              "transformations": [
-                {
-                  "kind": "configFromData",
-                  "spec": {
-                    "id": "configFromData",
-                    "options": {
-                      "applyTo": {
-                        "id": "byName",
-                        "options": "Value"
-                      },
-                      "configRefId": "C",
-                      "mappings": [
-                        {
-                          "fieldName": "Total",
-                          "handlerKey": "max",
-                          "reducerId": "last"
-                        }
-                      ]
-                    }
-                  }
-                }
-              ]
+              "transformations": []
             }
           },
           "description": "",
@@ -1559,10 +1403,10 @@
             "spec": {
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-8"
+                "name": "panel-16"
               },
-              "height": 8,
-              "width": 12,
+              "height": 9,
+              "width": 10,
               "x": 0,
               "y": 0
             }
@@ -1574,9 +1418,9 @@
                 "kind": "ElementReference",
                 "name": "panel-11"
               },
-              "height": 8,
-              "width": 3,
-              "x": 12,
+              "height": 9,
+              "width": 4,
+              "x": 10,
               "y": 0
             }
           },
@@ -1587,9 +1431,9 @@
                 "kind": "ElementReference",
                 "name": "panel-4"
               },
-              "height": 8,
-              "width": 3,
-              "x": 15,
+              "height": 9,
+              "width": 4,
+              "x": 14,
               "y": 0
             }
           },
@@ -1600,8 +1444,8 @@
                 "kind": "ElementReference",
                 "name": "panel-3"
               },
-              "height": 8,
-              "width": 2,
+              "height": 9,
+              "width": 3,
               "x": 18,
               "y": 0
             }
@@ -1613,9 +1457,9 @@
                 "kind": "ElementReference",
                 "name": "panel-1"
               },
-              "height": 8,
-              "width": 2,
-              "x": 20,
+              "height": 9,
+              "width": 3,
+              "x": 21,
               "y": 0
             }
           },
@@ -1624,25 +1468,12 @@
             "spec": {
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-2"
-              },
-              "height": 8,
-              "width": 2,
-              "x": 22,
-              "y": 0
-            }
-          },
-          {
-            "kind": "GridLayoutItem",
-            "spec": {
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-15"
+                "name": "panel-17"
               },
               "height": 8,
               "width": 12,
               "x": 0,
-              "y": 8
+              "y": 9
             }
           },
           {
@@ -1655,7 +1486,20 @@
               "height": 8,
               "width": 12,
               "x": 12,
-              "y": 8
+              "y": 9
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-15"
+              },
+              "height": 8,
+              "width": 12,
+              "x": 0,
+              "y": 17
             }
           },
           {
@@ -1666,9 +1510,9 @@
                 "name": "panel-5"
               },
               "height": 8,
-              "width": 24,
-              "x": 0,
-              "y": 16
+              "width": 12,
+              "x": 12,
+              "y": 17
             }
           },
           {
@@ -1681,7 +1525,7 @@
               "height": 8,
               "width": 12,
               "x": 0,
-              "y": 24
+              "y": 25
             }
           },
           {
@@ -1694,7 +1538,7 @@
               "height": 8,
               "width": 12,
               "x": 12,
-              "y": 24
+              "y": 25
             }
           }
         ]
@@ -1703,12 +1547,9 @@
     "links": [],
     "liveNow": false,
     "preload": false,
-    "tags": [
-      "blackbox",
-      "monitoring"
-    ],
+    "tags": [],
     "timeSettings": {
-      "autoRefresh": "5s",
+      "autoRefresh": "auto",
       "autoRefreshIntervals": [
         "5s",
         "10s",
@@ -1724,77 +1565,11 @@
       "fiscalYearStartMonth": 0,
       "from": "now-5m",
       "hideTimepicker": false,
-      "timezone": "browser",
+      "timezone": "",
       "to": "now"
     },
-    "title": "Blackbox Exporter Monitoring2",
-    "variables": [
-      {
-        "kind": "QueryVariable",
-        "spec": {
-          "allValue": ".*",
-          "allowCustomValue": true,
-          "current": {
-            "text": "All",
-            "value": [
-              "$__all"
-            ]
-          },
-          "definition": "label_values(probe_success,service)",
-          "hide": "dontHide",
-          "includeAll": true,
-          "multi": true,
-          "name": "service",
-          "options": [],
-          "query": {
-            "group": "prometheus",
-            "kind": "DataQuery",
-            "spec": {
-              "qryType": 1,
-              "query": "label_values(probe_success,service)",
-              "refId": "PrometheusVariableQueryEditor-VariableQuery"
-            },
-            "version": "v0"
-          },
-          "refresh": "onDashboardLoad",
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": "disabled"
-        }
-      },
-      {
-        "kind": "QueryVariable",
-        "spec": {
-          "allValue": ".*",
-          "allowCustomValue": true,
-          "current": {
-            "text": "All",
-            "value": [
-              "$__all"
-            ]
-          },
-          "definition": "label_values(probe_success,layer)",
-          "hide": "dontHide",
-          "includeAll": true,
-          "multi": true,
-          "name": "layer",
-          "options": [],
-          "query": {
-            "group": "prometheus",
-            "kind": "DataQuery",
-            "spec": {
-              "qryType": 1,
-              "query": "label_values(probe_success,layer)",
-              "refId": "PrometheusVariableQueryEditor-VariableQuery"
-            },
-            "version": "v0"
-          },
-          "refresh": "onDashboardLoad",
-          "regex": "",
-          "skipUrlSync": false,
-          "sort": "disabled"
-        }
-      }
-    ]
+    "title": "Service Monitor ",
+    "variables": []
   },
   "status": {}
+}

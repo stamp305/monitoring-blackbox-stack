@@ -1,62 +1,56 @@
 [
     {
         "targets": [
-            "https://www.google.com"
+            "reg.mfu.ac.th:443"
         ],
         "labels": {
-            "service": "google-test",
-            "layer": "application",
-            "module": "http_2xx"
-        }
-    },
-    {
-        "targets": [
-            "www.google.com:443"
-        ],
-        "labels": {
-            "service": "google-test",
-            "layer": "transport",
+            "service": "reg",
             "module": "tcp_connect"
         }
     },
     {
         "targets": [
-            "8.8.8.8"
+            "lms.mfu.ac.th:443"
         ],
         "labels": {
-            "service": "google-test",
-            "layer": "infrastructure",
-            "module": "icmp"
-        }
-    },
-    {
-        "targets": [
-            "https://www.facebook.com/home.php"
-        ],
-        "labels": {
-            "service": "facebook",
-            "layer": "application",
-            "module": "http_2xx"
-        }
-    },
-    {
-        "targets": [
-            "www.facebook.com:443"
-        ],
-        "labels": {
-            "service": "facebook",
-            "layer": "transport",
+            "service": "lms",
             "module": "tcp_connect"
         }
     },
     {
         "targets": [
-            "8.8.8.8"
+            "library.mfu.ac.th:443"
         ],
         "labels": {
-            "service": "facebook",
-            "layer": "infrastructure",
-            "module": "icmp"
+            "service": "library",
+            "module": "tcp_connect"
+        }
+    },
+    {
+        "targets": [
+            "scholarship.mfu.ac.th:443"
+        ],
+        "labels": {
+            "service": "scholarship",
+            "module": "tcp_connect"
+        }
+    },
+    {
+        "targets": [
+            "finance.mfu.ac.th:443"
+        ],
+        "labels": {
+            "service": "finance",
+            "module": "tcp_connect"
+        }
+    },
+    {
+        "targets": [
+            "eoffice.mfu.ac.th:443"
+        ],
+        "labels": {
+            "service": "e-office",
+            "module": "tcp_connect"
         }
     }
 ]
